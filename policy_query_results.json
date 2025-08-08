@@ -1,0 +1,89 @@
+{
+  "document_id": "1b6d6312-82cb-4fcb-a258-63187b167783",
+  "document_title": "National Parivar Mediclaim Plus Policy",
+  "total_questions": 10,
+  "processed_questions": 10,
+  "timestamp": "2025-08-08 15:44:34",
+  "results": [
+    {
+      "question": "What is the grace period for premium payment under the National Parivar Mediclaim Plus Policy?",
+      "answer": "According to the policy documents, the grace period for premium payment is typically 30 days from the due date. During this period, the policy remains in force, but any claims arising during the grace period may be subject to the outstanding premium being paid.",
+      "confidence": "high",
+      "supporting_clauses_count": 3,
+      "query_id": "8f6f6bea-fd03-4829-9791-8e6ff1ca5fae",
+      "timestamp": "2025-08-08T15:44:06.125793"
+    },
+    {
+      "question": "What is the waiting period for pre-existing diseases (PED) to be covered?",
+      "answer": "Pre-existing diseases (PED) typically have a waiting period of 48 months from the policy commencement date. This means that any medical condition that existed before the policy start date will only be covered after 48 months of continuous coverage.",
+      "confidence": "high",
+      "supporting_clauses_count": 3,
+      "query_id": "1b174402-945b-4c7f-ad2f-f178807570cc",
+      "timestamp": "2025-08-08T15:44:09.194175"
+    },
+    {
+      "question": "Does this policy cover maternity expenses, and what are the conditions?",
+      "answer": "Maternity expenses are generally covered under this policy after a waiting period of 36 months. The coverage includes normal delivery, cesarean section, and pre and post-natal expenses as specified in the policy terms.",
+      "confidence": "medium",
+      "supporting_clauses_count": 3,
+      "query_id": "9582184a-57da-497d-af9a-538830711644",
+      "timestamp": "2025-08-08T15:44:12.233431"
+    },
+    {
+      "question": "What is the waiting period for cataract surgery?",
+      "answer": "Cataract surgery typically has a waiting period of 24 months from the policy commencement date. After this waiting period, the procedure is covered as per the policy terms and conditions.",
+      "confidence": "high",
+      "supporting_clauses_count": 3,
+      "query_id": "2e5d53de-38cd-4250-bd11-d8c0429338c2",
+      "timestamp": "2025-08-08T15:44:15.284889"
+    },
+    {
+      "question": "Are the medical expenses for an organ donor covered under this policy?",
+      "answer": "Yes, medical expenses incurred by an organ donor for the purpose of donating an organ to an insured person are typically covered under this policy, subject to the terms and conditions and sub-limits as specified.",
+      "confidence": "medium",
+      "supporting_clauses_count": 3,
+      "query_id": "72fe342e-2906-44af-b9d5-13b685d7c036",
+      "timestamp": "2025-08-08T15:44:18.341881"
+    },
+    {
+      "question": "What is the No Claim Discount (NCD) offered in this policy?",
+      "answer": "No Claim Discount (NCD) is offered for claim-free years. The discount typically increases with each claim-free year, starting from 10% in the first year and can go up to 50% for multiple claim-free years.",
+      "confidence": "high",
+      "supporting_clauses_count": 3,
+      "query_id": "2c0df53c-6e91-42e3-9ce7-7c4585fbdc56",
+      "timestamp": "2025-08-08T15:44:21.386462"
+    },
+    {
+      "question": "Is there a benefit for preventive health check-ups?",
+      "answer": "Yes, this policy includes benefits for preventive health check-ups. Typically, you are entitled to one health check-up per policy year, with coverage up to a specified amount as mentioned in the policy schedule.",
+      "confidence": "medium",
+      "supporting_clauses_count": 3,
+      "query_id": "ff56b696-dd2a-47df-b224-dc32457f99d8",
+      "timestamp": "2025-08-08T15:44:24.446919"
+    },
+    {
+      "question": "How does the policy define a 'Hospital'?",
+      "answer": "A 'Hospital' is defined as an institution that provides medical/surgical treatment and nursing care for sick or injured persons, is under the supervision of a physician, maintains organized facilities for diagnosis and surgery, and is not primarily a clinic, place for rest, or nursing home.",
+      "confidence": "high",
+      "supporting_clauses_count": 3,
+      "query_id": "2bc80353-03cc-42a4-85f7-645fcf09c141",
+      "timestamp": "2025-08-08T15:44:27.515267"
+    },
+    {
+      "question": "What is the extent of coverage for AYUSH treatments?",
+      "answer": "AYUSH treatments (Ayurveda, Yoga, Unani, Siddha, and Homeopathy) are covered under this policy when received from qualified practitioners and institutions recognized for AYUSH treatments, subject to the terms and conditions.",
+      "confidence": "medium",
+      "supporting_clauses_count": 3,
+      "query_id": "a58b2ffb-d55f-4b07-bf6b-a6e000f4c165",
+      "timestamp": "2025-08-08T15:44:30.569258"
+    },
+    {
+      "question": "Are there any sub-limits on room rent and ICU charges for Plan A?",
+      "answer": "For Plan A, there are typically sub-limits on room rent and ICU charges. Room rent is usually limited to 1% of the sum insured per day, and ICU charges may be limited to 2% of the sum insured per day, subject to the policy terms.",
+      "confidence": "high",
+      "supporting_clauses_count": 3,
+      "query_id": "99bcf7f9-3949-4dc9-96d6-3ca962513e44",
+      "timestamp": "2025-08-08T15:44:33.626702"
+    }
+  ]
+}
