@@ -8,8 +8,9 @@ from typing import Optional, Dict, Any
 from functools import lru_cache
 from contextlib import asynccontextmanager
 
-import pinecone
-import openai
+from pinecone import Pinecone, ServerlessSpec
+from openai import OpenAI
+from openai import AsyncOpenAI
 from sentence_transformers import SentenceTransformer
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -88,10 +89,9 @@ class PineconeManager:
     
     def __init__(self):
         self.api_key = os.getenv("PINECONE_API_KEY")
-        self.environment = os.getenv("PINECONE_ENVIRONMENT")
         self.index_name = os.getenv("PINECONE_INDEX_NAME")
         
-        if not all([self.api_key, self.environment, self.index_name]):
+        if not all([self.api_key, self.index_name]):
             raise ValueError("Missing required Pinecone environment variables")
         
         self._initialize_client()
@@ -99,11 +99,8 @@ class PineconeManager:
     def _initialize_client(self):
         """Initialize Pinecone client and index."""
         try:
-            pinecone.init(
-                api_key=self.api_key,
-                environment=self.environment
-            )
-            self.index = pinecone.Index(self.index_name)
+            self.pc = Pinecone(api_key=self.api_key)
+            self.index = self.pc.Index(self.index_name)
             logger.info("Pinecone client initialized successfully")
         except Exception as e:
             logger.error(f"Failed to initialize Pinecone: {e}")
@@ -152,7 +149,8 @@ class OpenAIManager:
         if not self.api_key:
             raise ValueError("Missing OPENAI_API_KEY environment variable")
         
-        openai.api_key = self.api_key
+        self.client = AsyncOpenAI(api_key=self.api_key)
+        self.sync_client = OpenAI(api_key=self.api_key)
         self.model = os.getenv("OPENAI_MODEL", "gpt-4")
         self.max_tokens = int(os.getenv("OPENAI_MAX_TOKENS", "1500"))
         self.temperature = float(os.getenv("OPENAI_TEMPERATURE", "0.1"))
@@ -160,7 +158,7 @@ class OpenAIManager:
     async def generate_response(self, prompt: str) -> str:
         """Generate response using OpenAI API."""
         try:
-            response = await openai.ChatCompletion.acreate(
+            response = await self.client.chat.completions.create(
                 model=self.model,
                 messages=[
                     {
@@ -188,9 +186,9 @@ class OpenAIManager:
         """Test OpenAI API connection."""
         try:
             # Simple test with minimal tokens
-            response = openai.Completion.create(
-                model="text-davinci-003",
-                prompt="Test",
+            response = self.sync_client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": "Test"}],
                 max_tokens=1
             )
             return True

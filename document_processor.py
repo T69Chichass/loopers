@@ -23,7 +23,7 @@ import pandas as pd
 import re
 from sentence_transformers import SentenceTransformer
 import nltk
-from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.tokenize import sent_tokenize, word_tokenize, PunktSentenceTokenizer
 from nltk.corpus import stopwords
 
 # Database and vector store
@@ -37,6 +37,11 @@ try:
     nltk.data.find('tokenizers/punkt')
 except LookupError:
     nltk.download('punkt')
+
+try:
+    nltk.data.find('tokenizers/punkt_tab')
+except LookupError:
+    nltk.download('punkt_tab')
 
 try:
     nltk.data.find('corpora/stopwords')
@@ -260,7 +265,12 @@ class DocumentProcessor:
         text = self._clean_text(text)
         
         # Split into sentences for better chunk boundaries
-        sentences = sent_tokenize(text)
+        try:
+            sentences = sent_tokenize(text)
+        except LookupError:
+            # Fallback to simple sentence splitting if NLTK fails
+            sentences = text.split('. ')
+            sentences = [s.strip() + '.' for s in sentences if s.strip()]
         
         chunks = []
         current_chunk = ""
