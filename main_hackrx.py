@@ -1,8 +1,6 @@
 """
-Production-ready HackRx Document Processing System for Render deployment.
-API endpoint: /api/v1/hackrx/run
+Main FastAPI application with hackrx/run endpoint for document processing and question answering.
 """
-import os
 import json
 import logging
 import time
@@ -13,6 +11,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 import uvicorn
 
 from models import (
@@ -25,6 +24,7 @@ from models import (
 from simple_document_processor import get_document_processor
 from simple_embedding_manager import get_simple_embedding_manager
 from simple_gemini_manager import get_simple_gemini_manager
+from config import GEMINI_API_KEY
 
 # Configure logging
 logging.basicConfig(
@@ -32,9 +32,6 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
-
-# Get API key from environment variable (for Render)
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "your_gemini_api_key_here")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -68,13 +65,18 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Add CORS middleware
+# Add middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["*"]
 )
 
 @app.exception_handler(Exception)
@@ -133,7 +135,7 @@ async def health_check():
             content=error_response.model_dump()
         )
 
-@app.post("/api/v1/hackrx/run", response_model=HackRxResponse)
+@app.post("/hackrx/run", response_model=HackRxResponse)
 async def hackrx_run(request: HackRxRequest):
     """
     Process a document from URL and answer multiple questions about it.
@@ -266,7 +268,7 @@ async def root():
         "name": "HackRx Document Processing System",
         "version": "1.0.0",
         "description": "API for processing documents and answering questions using Gemini 2.5 Pro",
-        "main_endpoint": "POST /api/v1/hackrx/run",
+        "main_endpoint": "POST /hackrx/run",
         "health_check": "GET /health",
         "documentation": "GET /docs",
         "features": [
@@ -279,12 +281,10 @@ async def root():
     }
 
 if __name__ == "__main__":
-    # Get port from environment variable (for Render)
-    port = int(os.getenv("PORT", 8000))
     uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=port,
+        "main_hackrx:app",
+        host="127.0.0.1",
+        port=5000,
         reload=False,
         log_level="info"
     )

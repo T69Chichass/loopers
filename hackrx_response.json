@@ -1,0 +1,88 @@
+{
+  "document_url": "https://hackrx.blob.core.windows.net/assets/policy.pdf?sv=2023-01-03&st=2025-07-04T09%3A11%3A24Z&se=2027-07-05T09%3A11%3A00Z&sr=b&sp=r&sig=N4a9OU0w0QXO6AOIBiu4bpl7AXvEZogeT%2FjUHNO7HzQ%3D",
+  "questions_processed": 10,
+  "answers": [
+    {
+      "question": "What is the grace period for premium payment under the National Parivar Mediclaim Plus Policy?",
+      "answer": "I apologize, but I'm currently unable to provide a detailed answer to \"What is the grace period for premium payment under the National Parivar Mediclaim Plus Policy?\" because the Gemini API is not properly configured. Please ensure you have set up a valid GEMINI_API_KEY in your configuration.",
+      "confidence": "low",
+      "supporting_evidence": [
+        "No evidence available due to API configuration issue."
+      ]
+    },
+    {
+      "question": "What is the waiting period for pre-existing diseases (PED) to be covered?",
+      "answer": "I apologize, but I'm currently unable to provide a detailed answer to \"What is the waiting period for pre-existing diseases (PED) to be covered?\" because the Gemini API is not properly configured. Please ensure you have set up a valid GEMINI_API_KEY in your configuration.",
+      "confidence": "low",
+      "supporting_evidence": [
+        "No evidence available due to API configuration issue."
+      ]
+    },
+    {
+      "question": "Does this policy cover maternity expenses, and what are the conditions?",
+      "answer": "I apologize, but I'm currently unable to provide a detailed answer to \"Does this policy cover maternity expenses, and what are the conditions?\" because the Gemini API is not properly configured. Please ensure you have set up a valid GEMINI_API_KEY in your configuration.",
+      "confidence": "low",
+      "supporting_evidence": [
+        "No evidence available due to API configuration issue."
+      ]
+    },
+    {
+      "question": "What is the waiting period for cataract surgery?",
+      "answer": "I apologize, but I'm currently unable to provide a detailed answer to \"What is the waiting period for cataract surgery?\" because the Gemini API is not properly configured. Please ensure you have set up a valid GEMINI_API_KEY in your configuration.",
+      "confidence": "low",
+      "supporting_evidence": [
+        "No evidence available due to API configuration issue."
+      ]
+    },
+    {
+      "question": "Are the medical expenses for an organ donor covered under this policy?",
+      "answer": "I apologize, but I'm currently unable to provide a detailed answer to \"Are the medical expenses for an organ donor covered under this policy?\" because the Gemini API is not properly configured. Please ensure you have set up a valid GEMINI_API_KEY in your configuration.",
+      "confidence": "low",
+      "supporting_evidence": [
+        "No evidence available due to API configuration issue."
+      ]
+    },
+    {
+      "question": "What is the No Claim Discount (NCD) offered in this policy?",
+      "answer": "I apologize, but I'm currently unable to provide a detailed answer to \"What is the No Claim Discount (NCD) offered in this policy?\" because the Gemini API is not properly configured. Please ensure you have set up a valid GEMINI_API_KEY in your configuration.",
+      "confidence": "low",
+      "supporting_evidence": [
+        "No evidence available due to API configuration issue."
+      ]
+    },
+    {
+      "question": "Is there a benefit for preventive health check-ups?",
+      "answer": "I apologize, but I'm currently unable to provide a detailed answer to \"Is there a benefit for preventive health check-ups?\" because the Gemini API is not properly configured. Please ensure you have set up a valid GEMINI_API_KEY in your configuration.",
+      "confidence": "low",
+      "supporting_evidence": [
+        "No evidence available due to API configuration issue."
+      ]
+    },
+    {
+      "question": "How does the policy define a 'Hospital'?",
+      "answer": "I apologize, but I'm currently unable to provide a detailed answer to \"How does the policy define a 'Hospital'?\" because the Gemini API is not properly configured. Please ensure you have set up a valid GEMINI_API_KEY in your configuration.",
+      "confidence": "low",
+      "supporting_evidence": [
+        "No evidence available due to API configuration issue."
+      ]
+    },
+    {
+      "question": "What is the extent of coverage for AYUSH treatments?",
+      "answer": "I apologize, but I'm currently unable to provide a detailed answer to \"What is the extent of coverage for AYUSH treatments?\" because the Gemini API is not properly configured. Please ensure you have set up a valid GEMINI_API_KEY in your configuration.",
+      "confidence": "low",
+      "supporting_evidence": [
+        "No evidence available due to API configuration issue."
+      ]
+    },
+    {
+      "question": "Are there any sub-limits on room rent and ICU charges for Plan A?",
+      "answer": "I apologize, but I'm currently unable to provide a detailed answer to \"Are there any sub-limits on room rent and ICU charges for Plan A?\" because the Gemini API is not properly configured. Please ensure you have set up a valid GEMINI_API_KEY in your configuration.",
+      "confidence": "low",
+      "supporting_evidence": [
+        "No evidence available due to API configuration issue."
+      ]
+    }
+  ],
+  "processing_time": 9.700674772262573,
+  "timestamp": "2025-08-08T17:32:27.684775"
+}

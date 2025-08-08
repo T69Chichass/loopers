@@ -1,255 +1,214 @@
-# LLM-Powered Document Query System
+# HackRx Document Processing System
 
-A sophisticated AI-powered system for processing and querying insurance policy documents using natural language. Built with FastAPI, OpenAI GPT-4, Pinecone vector database, and advanced document processing capabilities.
+A production-ready FastAPI application for processing documents and answering questions using Google Gemini 2.5 Pro. This system can download documents from URLs, extract text, and provide intelligent answers to multiple questions about the document content.
 
-## 🚀 Features
+## 🚀 API Endpoint
 
-- **📄 Multi-format Document Support**: PDF, TXT, DOCX files
-- **🤖 AI-Powered Queries**: Natural language processing with GPT-4
-- **🔍 Vector Search**: Semantic similarity search with Pinecone
-- **📊 Intelligent Chunking**: Advanced text segmentation for optimal retrieval
-- **🎯 Confidence Scoring**: Reliability indicators for answers
-- **📚 Supporting Evidence**: Relevant document excerpts with each answer
-- **🔄 Real-time Processing**: Fast document upload and query processing
-- **🏥 Insurance-Specific**: Optimized for insurance policy analysis
+**Main Endpoint**: `POST /api/v1/hackrx/run`
 
-## 🏗️ Architecture
+**Health Check**: `GET /health`
 
+**Documentation**: `GET /docs`
+
+## 📋 Features
+
+- **Document Processing**: Download and process PDF documents from URLs
+- **Multiple Question Answering**: Answer multiple questions about a single document
+- **Gemini 2.5 Pro Integration**: Uses Google's latest Gemini 2.5 Pro model
+- **Intelligent Context Retrieval**: Finds relevant document sections for each question
+- **Confidence Scoring**: Provides confidence levels for each answer
+- **Supporting Evidence**: Extracts supporting text from the document
+- **Robust Error Handling**: Graceful fallbacks when dependencies are unavailable
+
+## 🛠️ Deployment on Render
+
+### 1. Prerequisites
+
+- Render account
+- Google Gemini API key
+
+### 2. Get Gemini API Key
+
+1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Create a new API key
+3. Copy the key for deployment
+
+### 3. Deploy on Render
+
+1. **Fork/Clone this repository** to your GitHub account
+
+2. **Create a new Web Service on Render**:
+   - Go to [Render Dashboard](https://dashboard.render.com/)
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Choose the repository with this code
+
+3. **Configure the service**:
+   - **Name**: `hackrx-document-processor` (or any name you prefer)
+   - **Environment**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `python main.py`
+   - **Plan**: Choose appropriate plan (Free tier works for testing)
+
+4. **Set Environment Variables**:
+   - Go to "Environment" tab
+   - Add environment variable:
+     - **Key**: `GEMINI_API_KEY`
+     - **Value**: Your actual Gemini API key from step 2
+
+5. **Deploy**:
+   - Click "Create Web Service"
+   - Wait for deployment to complete
+
+### 4. Test Your Deployment
+
+Once deployed, your API will be available at:
+`https://your-app-name.onrender.com`
+
+**Test the health endpoint**:
+```bash
+curl https://your-app-name.onrender.com/health
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Document      │    │   FastAPI       │    │   OpenAI        │
-│   Upload        │───▶│   Server        │───▶│   GPT-4         │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                                │
-                                ▼
-                       ┌─────────────────┐
-                       │   Pinecone      │
-                       │   Vector DB     │
-                       └─────────────────┘
+
+**Test the main endpoint**:
+```bash
+curl -X POST "https://your-app-name.onrender.com/api/v1/hackrx/run" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer 66c272350145dbd2c98576a1ae3f62bacfcd74a73ceab1546744e495b65d67e4" \
+  -d '{
+    "documents": "https://hackrx.blob.core.windows.net/assets/policy.pdf?sv=2023-01-03&st=2025-07-04T09%3A11%3A24Z&se=2027-07-05T09%3A11%3A00Z&sr=b&sp=r&sig=N4a9OU0w0QXO6AOIBiu4bpl7AXvEZogeT%2FjUHNO7HzQ%3D",
+    "questions": [
+        "What is the grace period for premium payment under the National Parivar Mediclaim Plus Policy?",
+        "What is the waiting period for pre-existing diseases (PED) to be covered?"
+    ]
+}'
 ```
 
-## 📋 Prerequisites
+## 📖 API Documentation
 
-- Python 3.12+
-- PostgreSQL database
-- Pinecone account and API key
-- OpenAI API key
+### Request Format
 
-## 🛠️ Installation
+**URL**: `POST /api/v1/hackrx/run`
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd loopers
-   ```
+**Headers**:
+```
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer your_token_here (optional)
+```
 
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+**Request Body**:
+```json
+{
+    "documents": "https://example.com/document.pdf",
+    "questions": [
+        "What is the grace period for premium payment?",
+        "What is the waiting period for pre-existing diseases?",
+        "Does this policy cover maternity expenses?"
+    ]
+}
+```
 
-3. **Set up environment variables**
-   ```bash
-   cp env.example .env
-   # Edit .env with your API keys and database credentials
-   ```
+### Response Format
 
-4. **Configure your API keys**
-   ```bash
-   python configure_apis.py
-   ```
+```json
+{
+    "document_url": "https://example.com/document.pdf",
+    "questions_processed": 3,
+    "answers": [
+        {
+            "question": "What is the grace period for premium payment?",
+            "answer": "Based on the policy document, the grace period for premium payment is 30 days from the due date...",
+            "confidence": "high",
+            "supporting_evidence": [
+                "The policy states that a grace period of 30 days is allowed for payment of renewal premium...",
+                "During the grace period, the policy remains in force and claims are admissible..."
+            ]
+        }
+    ],
+    "processing_time": 45.23,
+    "timestamp": "2024-01-15T10:30:00Z"
+}
+```
 
-## 🚀 Quick Start
+## 🔧 Local Development
 
-### 1. Start the API Server
+### 1. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Set Environment Variable
+
+```bash
+# Windows
+set GEMINI_API_KEY=your_actual_api_key_here
+
+# Linux/Mac
+export GEMINI_API_KEY=your_actual_api_key_here
+```
+
+### 3. Run the Application
+
 ```bash
 python main.py
 ```
-The server will start at `http://localhost:8000`
 
-### 2. Access API Documentation
-- **Swagger UI**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
+The server will start on `http://localhost:8000`
 
-### 3. Upload and Query Documents
-```bash
-# Run the example script
-python examples/process_insurance_policy.py
-```
+## 🛡️ Error Handling
 
-## 📖 API Endpoints
+The system is designed to be robust and handle various failure scenarios:
 
-### Core Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/` | GET | System information |
-| `/health` | GET | Health check |
-| `/documents/upload` | POST | Upload document |
-| `/query` | POST | Process natural language query |
-| `/documents` | GET | List uploaded documents |
-| `/documents/{id}` | GET | Get document status |
-| `/documents/{id}` | DELETE | Delete document |
-
-### Example Usage
-
-#### Upload Document
-```bash
-curl -X POST "http://localhost:8000/documents/upload" \
-  -F "file=@policy.pdf" \
-  -F "document_type=insurance" \
-  -F "category=health_insurance" \
-  -F "title=My Insurance Policy"
-```
-
-#### Query Document
-```bash
-curl -X POST "http://localhost:8000/query" \
-  -H "Content-Type: application/json" \
-  -d '{"query": "What is the grace period for premium payment?"}'
-```
-
-## 🧪 Testing
-
-### Run Demo Workflow
-```bash
-python test_demo_workflow.py
-```
-
-### Test API Endpoints
-```bash
-python test_api.py
-```
-
-### Test Document Processing
-```bash
-python test_document_processing.py
-```
-
-## 📁 Project Structure
-
-```
-loopers/
-├── src/                          # Source code
-│   └── policy_processor.py       # Clean policy processor
-├── examples/                     # Example scripts
-│   └── process_insurance_policy.py
-├── tests/                        # Test files
-├── main.py                       # FastAPI application
-├── demo_improved.py              # Demo version
-├── requirements.txt              # Dependencies
-├── config.py                     # Configuration
-├── models.py                     # Data models
-├── dependencies.py               # Dependency injection
-├── document_processor.py         # Document processing
-├── improved_pdf_extractor.py     # PDF text extraction
-├── database.py                   # Database models
-├── exceptions.py                 # Custom exceptions
-├── logging_config.py             # Logging configuration
-└── README.md                     # This file
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Create a `.env` file with the following variables:
-
-```env
-# Database Configuration
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-POSTGRES_USER=your_user
-POSTGRES_PASSWORD=your_password
-POSTGRES_DB=query_retrieval_db
-
-# Pinecone Configuration
-PINECONE_API_KEY=your_pinecone_api_key
-PINECONE_ENVIRONMENT=gcp-starter
-PINECONE_INDEX_NAME=your_index_name
-
-# OpenAI Configuration
-OPENAI_API_KEY=your_openai_api_key
-OPENAI_MODEL=gpt-4
-OPENAI_MAX_TOKENS=1500
-OPENAI_TEMPERATURE=0.1
-
-# Application Configuration
-APP_ENV=development
-LOG_LEVEL=INFO
-DEBUG=True
-```
-
-## 🎯 Use Cases
-
-### Insurance Policy Analysis
-- **Grace Period Queries**: Premium payment deadlines
-- **Waiting Period Analysis**: Pre-existing conditions coverage
-- **Maternity Benefits**: Coverage conditions and limitations
-- **Surgical Procedures**: Waiting periods and coverage
-- **Claim Process**: Documentation and submission requirements
-
-### Document Types Supported
-- **Insurance Policies**: Health, auto, life insurance
-- **Legal Documents**: Contracts, agreements
-- **HR Documents**: Employee handbooks, policies
-- **Medical Records**: Patient documentation
-- **Financial Documents**: Reports, statements
-
-## 🚀 Deployment
-
-### Docker Deployment
-```bash
-# Build and run with Docker
-docker-compose up --build
-```
-
-### Production Deployment
-```bash
-# Install production dependencies
-pip install gunicorn
-
-# Run with Gunicorn
-gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker
-```
+- **Missing Dependencies**: Falls back to dummy implementations
+- **API Failures**: Provides informative error messages
+- **Document Processing Errors**: Graceful degradation
+- **Network Issues**: Timeout handling and retry logic
 
 ## 📊 Performance
 
-- **Document Processing**: ~6 seconds for 100KB PDF
-- **Query Response**: ~3 seconds per query
-- **Text Extraction**: 99%+ accuracy
-- **Vector Search**: Sub-second retrieval
-- **AI Response**: High-quality, contextual answers
+Typical processing times:
+- Small documents (< 10 pages): 10-30 seconds
+- Medium documents (10-50 pages): 30-90 seconds
+- Large documents (> 50 pages): 90+ seconds
 
-## 🤝 Contributing
+Performance depends on:
+- Document size and complexity
+- Number of questions
+- API response times
+- System resources
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+## 🔒 Security
 
-## 📄 License
+- API keys are stored as environment variables
+- No sensitive data is logged
+- Input validation on all endpoints
+- CORS configured for production use
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 📝 Files Structure
 
-## 🆘 Support
+```
+├── main.py                          # Main FastAPI application
+├── models.py                        # Pydantic models for API
+├── simple_document_processor.py     # Document processing logic
+├── simple_embedding_manager.py      # Embedding generation
+├── simple_gemini_manager.py         # Gemini API integration
+├── config.py                        # Configuration settings
+├── requirements.txt                 # Python dependencies
+├── Procfile                         # Render deployment config
+└── README.md                        # This file
+```
 
-For support and questions:
-- Create an issue in the repository
-- Check the API documentation at `/docs`
-- Review the test files for examples
+## 🤝 Support
 
-## 🔄 Changelog
-
-### v1.0.0
-- Initial release
-- FastAPI-based API
-- OpenAI GPT-4 integration
-- Pinecone vector search
-- PDF/TXT/DOCX support
-- Insurance policy optimization
+For issues and questions:
+1. Check the Render logs for error messages
+2. Verify your Gemini API key is correctly set
+3. Test with the health endpoint first
+4. Ensure your document URL is accessible
 
 ---
 
-**Built with ❤️ for intelligent document processing**
+**Happy Document Processing! 🎉**

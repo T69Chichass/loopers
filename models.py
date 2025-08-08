@@ -1,7 +1,7 @@
 """
 Pydantic models for request and response validation.
 """
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, ConfigDict
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 
@@ -23,6 +23,60 @@ class QueryRequest(BaseModel):
         return v.strip()
 
 
+class HackRxRequest(BaseModel):
+    """Request model for the hackrx/run endpoint."""
+    documents: str = Field(
+        ..., 
+        description="URL to the document to be processed"
+    )
+    questions: List[str] = Field(
+        ..., 
+        min_items=1,
+        max_items=20,
+        description="List of questions to ask about the document"
+    )
+    
+    @validator('documents')
+    def validate_documents_url(cls, v):
+        """Validate that the documents field is a valid URL."""
+        if not v.startswith(('http://', 'https://')):
+            raise ValueError('Documents must be a valid HTTP/HTTPS URL')
+        return v
+    
+    @validator('questions')
+    def validate_questions(cls, v):
+        """Validate that questions are not empty."""
+        for i, question in enumerate(v):
+            if not question.strip():
+                raise ValueError(f'Question {i+1} cannot be empty')
+        return [q.strip() for q in v]
+
+
+class HackRxQuestionResponse(BaseModel):
+    """Response model for a single question in hackrx endpoint."""
+    question: str = Field(..., description="The original question")
+    answer: str = Field(..., description="The AI-generated answer")
+    confidence: str = Field(..., description="Confidence level (high/medium/low)")
+    supporting_evidence: List[str] = Field(
+        default_factory=list,
+        description="Supporting text excerpts from the document"
+    )
+
+
+class HackRxResponse(BaseModel):
+    """Response model for the hackrx/run endpoint."""
+    model_config = ConfigDict(json_encoders={datetime: lambda v: v.isoformat()})
+    
+    document_url: str = Field(..., description="URL of the processed document")
+    questions_processed: int = Field(..., description="Number of questions processed")
+    answers: List[HackRxQuestionResponse] = Field(..., description="Answers to all questions")
+    processing_time: float = Field(..., description="Total processing time in seconds")
+    timestamp: datetime = Field(
+        default_factory=datetime.utcnow,
+        description="Timestamp when the processing was completed"
+    )
+
+
 class DocumentClause(BaseModel):
     """Model representing a specific document clause or excerpt."""
     text: str = Field(..., description="The text content of the clause")
@@ -37,6 +91,8 @@ class DocumentClause(BaseModel):
 
 class QueryResponse(BaseModel):
     """Response model for the query endpoint."""
+    model_config = ConfigDict(json_encoders={datetime: lambda v: v.isoformat()})
+    
     answer: str = Field(..., description="The AI-generated answer to the query")
     supporting_clauses: List[DocumentClause] = Field(
         ..., 
@@ -62,6 +118,8 @@ class QueryResponse(BaseModel):
 
 class ErrorResponse(BaseModel):
     """Standard error response model."""
+    model_config = ConfigDict(json_encoders={datetime: lambda v: v.isoformat()})
+    
     error: str = Field(..., description="Error type")
     message: str = Field(..., description="Human-readable error message")
     details: Optional[Dict[str, Any]] = Field(
@@ -76,6 +134,8 @@ class ErrorResponse(BaseModel):
 
 class HealthCheckResponse(BaseModel):
     """Health check response model."""
+    model_config = ConfigDict(json_encoders={datetime: lambda v: v.isoformat()})
+    
     status: str = Field(..., description="Service status")
     timestamp: datetime = Field(
         default_factory=datetime.utcnow,
@@ -92,7 +152,7 @@ class PineconeSearchResult(BaseModel):
     id: str = Field(..., description="Pinecone vector ID")
     score: float = Field(..., description="Similarity score")
     metadata: Dict[str, Any] = Field(
-        default_factory=dict, 
+        default_factory=dict,
         description="Associated metadata"
     )
     text: str = Field(..., description="Original text content")
